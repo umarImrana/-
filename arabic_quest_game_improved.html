@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#17133d">
+<title>Arabic Quest — Wasan Koyon Larabci</title>
+<style>
+:root{--navy:#17133d;--purple:#6d4aff;--pink:#ff5ca8;--gold:#ffd45a;--mint:#55e6bd;--white:#fff;--muted:#c7c4e7}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#342477 0,#17133d 58%,#100d2a 100%);color:var(--white);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer;border:0}
+.app{max-width:520px;margin:auto;min-height:100vh;padding:16px 15px 28px;overflow:hidden;position:relative}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{font-weight:1000;font-size:19px;letter-spacing:.4px}.brand span{color:var(--gold)}
+.pill{background:#ffffff17;border:1px solid #ffffff25;border-radius:20px;padding:8px 11px;font-size:13px;font-weight:800}
+.hero{margin-top:17px;padding:19px;border-radius:26px;background:linear-gradient(135deg,#7656ff,#b84eff 60%,#ff67ad);box-shadow:0 12px 0 #100d2b;position:relative;overflow:hidden}
+.hero:after{content:"✦";position:absolute;font-size:115px;right:8px;top:-25px;color:#ffffff20;transform:rotate(20deg)}
+.kicker{font-size:11px;letter-spacing:1.8px;font-weight:900;opacity:.85}.hero h1{font-size:28px;line-height:1.12;margin:7px 0}.hero p{font-size:13px;max-width:280px;margin:0 0 15px;color:#f7efff}
+.progress-wrap{height:9px;background:#ffffff38;border-radius:20px;overflow:hidden}.progress{height:100%;width:0;background:var(--gold);border-radius:20px;transition:width .3s}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:18px 0}
+.stat{background:#ffffff0d;border:1px solid #ffffff19;border-radius:17px;padding:11px;text-align:center}.stat b{display:block;font-size:19px}.stat small{color:var(--muted);font-size:11px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 10px;font-weight:900}.section-title small{color:var(--muted);font-weight:600}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.mode{padding:15px 13px;border-radius:20px;text-align:left;color:white;min-height:130px;background:#ffffff10;border:1px solid #ffffff20;transition:transform .15s,background .15s;box-shadow:0 5px 0 #0e0b25}
+.mode:active,.answer:active,.main-btn:active{transform:scale(.97)}
+.mode .emoji{font-size:30px;display:block;margin-bottom:7px}.mode strong{display:block;font-size:15px}.mode small{color:#d4d0f0;font-size:11px}
+.mode.pink{background:linear-gradient(145deg,#a82e79,#642a89)}.mode.blue{background:linear-gradient(145deg,#236cc0,#4538a7)}.mode.green{background:linear-gradient(145deg,#168c83,#245c9c)}.mode.orange{background:linear-gradient(145deg,#c66c22,#9b3c7c)}
+.bottom-note{text-align:center;color:#9f9bc8;font-size:11px;margin:22px 0 0}
+.screen{display:none}.screen.active{display:block}
+.back{color:#fff;background:#ffffff18;border:1px solid #ffffff20;border-radius:13px;padding:9px 13px;font-weight:800}
+.game-head{display:flex;align-items:center;justify-content:space-between;margin:18px 0 14px}
+.level-tag{background:#ffd45a;color:#34244e;padding:8px 12px;border-radius:12px;font-weight:1000;font-size:12px}
+.question-card{background:#fff;color:#211945;border-radius:26px;padding:22px 17px;text-align:center;box-shadow:0 8px 0 #0c0923}
+.q-label{font-size:11px;color:#8a80b4;font-weight:900;letter-spacing:1.4px}
+.arabic{font-size:52px;font-weight:900;direction:rtl;line-height:1.35;margin:8px 0}
+.translit{color:#7b70a7;font-size:13px;font-weight:700}
+.prompt{font-weight:900;font-size:18px;margin:17px 0 5px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.answer{background:#ffffff12;color:#fff;border:2px solid #ffffff20;border-radius:17px;min-height:64px;padding:12px 8px;font-weight:850;box-shadow:0 4px 0 #0e0b25}
+.answer.correct{background:#167d65;border-color:#55e6bd}.answer.wrong{background:#a72f64;border-color:#ff75aa}
+.feedback{min-height:25px;text-align:center;margin:12px 0 3px;font-weight:900;font-size:14px}
+.main-btn{width:100%;border-radius:16px;background:var(--gold);color:#34244e;font-weight:1000;padding:15px;margin-top:9px;box-shadow:0 5px 0 #ad7c26}
+.result{text-align:center;padding:24px 8px}.result .big{font-size:72px}.result h2{font-size:29px;margin:5px}.result p{color:var(--muted)}
+.result-box{background:#ffffff12;border-radius:18px;padding:15px;margin:18px 0;display:flex;justify-content:space-around}
+.profile-card{margin-top:18px;background:#ffffff10;border:1px solid #ffffff24;border-radius:24px;padding:18px}.profile-card h2{margin:0 0 6px;font-size:23px}.profile-card p{color:var(--muted);font-size:13px}.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.profile-grid .wide{grid-column:1/-1}.profile-card label{display:block;font-size:12px;font-weight:800;margin-bottom:5px}.profile-card input,.profile-card select{width:100%;padding:12px;border-radius:12px;border:1px solid #ffffff30;background:#21194e;color:#fff;font:inherit}.avatar{width:92px;height:92px;border-radius:50%;border:3px solid var(--gold);object-fit:cover;background:#ffffff18;display:block;margin:8px auto}.profile-chip{display:flex;align-items:center;gap:8px}.profile-chip img{width:30px;height:30px;object-fit:cover;border-radius:50%;border:2px solid var(--gold)}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#fff;color:#241747;padding:12px 18px;border-radius:30px;font-weight:900;box-shadow:0 6px 25px #0005;display:none;z-index:5;white-space:nowrap}
+@media(min-width:520px){body{padding:16px 0}.app{border:1px solid #ffffff12;border-radius:28px;min-height:calc(100vh - 32px)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand">🌙 ARABIC <span>QUEST</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><div class="pill">🪙 <span id="coins">0</span></div><button class="pill profile-chip" onclick="openProfile()"><img id="topAvatar" alt="Hoto" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='70' text-anchor='middle' font-size='60'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E"><span id="topName">Ni</span></button></div>
+  </div>
+  <div id="profile" class="screen">
+    <button class="back" onclick="goHome()">← Komawa</button>
+    <div class="profile-card">
+      <h2>🎮 Ƙirƙiri bayanan ɗan wasa</h2>
+      <p>Ka cika bayananka kafin fara wasa. Za a ajiye su a wannan na'urar.</p>
+      <div style="text-align:center"><img id="avatarPreview" class="avatar" alt="Hoton ɗan wasa" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='70' text-anchor='middle' font-size='60'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E"><label for="photoInput" style="display:inline-block;background:#ffffff18;border-radius:12px;padding:9px 13px">📷 Zaɓi hoto</label><input id="photoInput" type="file" accept="image/*" style="display:none" onchange="loadPhoto(event)"></div>
+      <div class="profile-grid">
+        <div class="wide"><label for="playerName">Suna</label><input id="playerName" maxlength="30" placeholder="Rubuta sunanka"></div>
+        <div><label for="playerAge">Shekaru</label><input id="playerAge" type="number" min="5" max="120" placeholder="Misali: 18"></div>
+        <div><label for="playerGender">Jinsi (zaɓi ne)</label><select id="playerGender"><option value="">Ba a zaɓa ba</option><option>Namiji</option><option>Mace</option><option>Ba na son faɗa</option></select></div>
+      </div>
+      <button class="main-btn" onclick="saveProfile()">Ajiye bayanai ▶️</button>
+      <p style="font-size:11px;text-align:center">Kada ka saka adireshi ko lambar waya.</p>
+    </div>
+  </div>
+  <div id="home" class="screen active">
+    <div class="hero">
+      <div class="kicker">MATAKI NA 1 • KASADA 1</div>
+      <h1>Ka koyi Larabci.<br>Ka zama zakara! 🏆</h1>
+      <p>Yi wasa, tara tsabar kuɗi, buɗe sabbin matakai, kuma ka koyi kalmomin Larabci.</p>
+      <div class="progress-wrap"><div id="homeProgress" class="progress"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;margin-top:7px"><span>Ci gaban ka</span><span id="progressText">0% tamam</span></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="best">0</b><small>🏆 Mafi kyau</small></div>
+      <div class="stat"><b id="played">0</b><small>🎮 Wasanni</small></div>
+      <div class="stat"><b id="streak">0🔥</b><small>Jere daidai</small></div>
+    </div>
+    <div class="section-title"><span id="welcomeName">Zaɓi wasan ka</span><small>4 modes</small></div>
+    <div class="modes">
+      <button class="mode pink" onclick="startGame('vocab')"><span class="emoji">🧠</span><strong>Kalma da Ma'ana</strong><small>Ka gano ma'anar kalma</small></button>
+      <button class="mode blue" onclick="startGame('match')"><span class="emoji">⚡</span><strong>Gwajin Sauri</strong><small>Yi amsa kafin lokaci!</small></button>
+      <button class="mode green" onclick="startGame('letters')"><span class="emoji">🔤</span><strong>Haruffa</strong><small>Koyi haruffan Larabci</small></button>
+      <button class="mode orange" onclick="startGame('daily')"><span class="emoji">🎁</span><strong>Kalmar Yau</strong><small>Ƙalubale na musamman</small></button>
+    </div>
+    <div class="bottom-note">Ana adana ci gabanka a wannan na'urar • لا تيأس، استمر!</div>
+  </div>
+  <div id="play" class="screen">
+    <div class="game-head"><button class="back" onclick="goHome()">← Fita</button><span class="level-tag" id="level">MATaki 1</span><span class="pill">❤️ <span id="lives">3</span></span></div>
+    <div class="progress-wrap"><div id="gameProgress" class="progress"></div></div>
+    <div style="display:flex;justify-content:space-between;margin:8px 2px 13px;color:#d3cfee;font-size:12px;font-weight:800"><span id="roundText">Tambaya 1/10</span><span id="timer">⏱️ 20s</span><span>⭐ <span id="score">0</span></span></div>
+    <div class="question-card">
+      <div class="q-label" id="qLabel">MENENE MA'ANAR WANNAN KALMA?</div>
+      <div class="arabic" id="arabicWord">كِتَاب</div>
+      <div class="translit" id="translit">Kitaab</div>
+      <div class="prompt" id="prompt">Me ake nufi da wannan?</div>
+    </div>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback"></div>
+    <button id="nextBtn" class="main-btn" style="display:none" onclick="nextQuestion()">Ci gaba ➜</button>
+  </div>
+  <div id="end" class="screen">
+    <div class="result"><div class="big" id="resultEmoji">🏆</div><h2 id="resultTitle">Madalla!</h2><p id="resultText">Ka gama zagaye.</p>
+      <div class="result-box"><div><div style="font-size:25px;font-weight:1000" id="finalScore">0</div><small>Maki ⭐</small></div><div><div style="font-size:25px;font-weight:1000" id="finalCoins">0</div><small>Tsabar 🪙</small></div><div><div style="font-size:25px;font-weight:1000" id="finalCorrect">0/10</div><small>Daidai ✅</small></div></div>
+      <button class="main-btn" onclick="startGame(lastMode)">Sake Wasa 🔁</button><button class="main-btn" style="background:#ffffff18;color:#fff;box-shadow:none" onclick="goHome()">Komawa Gida 🏠</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const words=[
+ {ar:"كِتَاب",tr:"Kitaab",en:"Littafi",emoji:"📘"},
+ {ar:"مَاء",tr:"Maa'",en:"Ruwa",emoji:"💧"},
+ {ar:"بَيْت",tr:"Bayt",en:"Gida",emoji:"🏠"},
+ {ar:"قَلَم",tr:"Qalam",en:"Alƙalami",emoji:"✏️"},
+ {ar:"مَدْرَسَة",tr:"Madrasa",en:"Makaranta",emoji:"🏫"},
+ {ar:"شَمْس",tr:"Shams",en:"Rana",emoji:"☀️"},
+ {ar:"قَمَر",tr:"Qamar",en:"Wata",emoji:"🌙"},
+ {ar:"كَلْب",tr:"Kalb",en:"Kare",emoji:"🐕"},
+ {ar:"قِطَّة",tr:"Qitta",en:"Mage",emoji:"🐈"},
+ {ar:"تُفَّاحَة",tr:"Tuffaaha",en:"Tuffa",emoji:"🍎"},
+ {ar:"بَاب",tr:"Baab",en:"Ƙofa",emoji:"🚪"},
+ {ar:"كُرْسِيّ",tr:"Kursiyy",en:"Kujera",emoji:"🪑"},
+ {ar:"صَدِيق",tr:"Sadiiq",en:"Aboki",emoji:"🤝"},
+ {ar:"سَلَام",tr:"Salaam",en:"Aminci / gaisuwa",emoji:"👋"},
+ {ar:"حُبّ",tr:"Hubb",en:"Ƙauna",emoji:"❤️"},
+ {ar:"نَجْم",tr:"Najm",en:"Tauraro",emoji:"⭐"},
+ {ar:"طَالِب",tr:"Taalib",en:"Ɗalibi",emoji:"🎓"},
+ {ar:"مَسْجِد",tr:"Masjid",en:"Masallaci",emoji:"🕌"},
+ {ar:"يَد",tr:"Yad",en:"Hannu",emoji:"✋"},
+ {ar:"عَيْن",tr:"Ayn",en:"Ido",emoji:"👁️"}
+];
+const letters=[
+ {ar:"أ",tr:"Alif",en:"Harafin Alif"},{ar:"ب",tr:"Baa",en:"Harafin Baa"},{ar:"ت",tr:"Taa",en:"Harafin Taa"},
+ {ar:"ث",tr:"Thaa",en:"Harafin Thaa"},{ar:"ج",tr:"Jiim",en:"Harafin Jiim"},{ar:"ح",tr:"Haa",en:"Harafin Haa"},
+ {ar:"خ",tr:"Khaa",en:"Harafin Khaa"},{ar:"د",tr:"Daal",en:"Harafin Daal"},{ar:"ر",tr:"Raa",en:"Harafin Raa"},
+ {ar:"س",tr:"Siin",en:"Harafin Siin"},{ar:"ش",tr:"Shiin",en:"Harafin Shiin"},{ar:"م",tr:"Miim",en:"Harafin Miim"}
+];
+let saved={coins:0,best:0,played:0,streak:0,total:0,profile:null,seen:{}};try{saved={...saved,...JSON.parse(localStorage.getItem('aqSave')||'{}')};saved.seen=saved.seen||{}}catch(e){}
+let lastMode='vocab', deck=[],idx=0,score=0,correct=0,lives=3,answered=false,timerVal=20,timerId=null,runStreak=0;
+const $=id=>document.getElementById(id);
+function save(){try{localStorage.setItem('aqSave',JSON.stringify(saved))}catch(e){}updateHome()}
+function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2400)}
+function openProfile(){show('profile');$('playerName').value=saved.profile?.name||'';$('playerAge').value=saved.profile?.age||'';$('playerGender').value=saved.profile?.gender||'';if(saved.profile?.photo)$('avatarPreview').src=saved.profile.photo}
+function loadPhoto(e){const f=e.target.files&&e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')||f.size>2*1024*1024){toast('Zaɓi hoto mai ƙasa da 2MB.');return}const r=new FileReader();r.onload=()=>{$('avatarPreview').src=r.result};r.readAsDataURL(f)}
+function saveProfile(){const name=$('playerName').value.trim(),age=Number($('playerAge').value);if(!name||!age||age<5||age>120){toast('Shigar da suna da shekaru 5 zuwa 120.');return}saved.profile={name,age,gender:$('playerGender').value,photo:$('avatarPreview').src};save();show('home');toast('An ajiye bayananka!')}
+
+function updateHome(){ $('coins').textContent=saved.coins;$('best').textContent=saved.best;$('played').textContent=saved.played;$('streak').textContent=saved.streak+'🔥';let p=Math.min(100,Math.round(saved.total/100*100));$('homeProgress').style.width=p+'%';$('progressText').textContent=p+'% tamam';$('topName').textContent=saved.profile?.name||'Ni';if(saved.profile?.photo)$('topAvatar').src=saved.profile.photo;$('welcomeName').textContent=saved.profile?.name?'Sannu, '+saved.profile.name+'!':'Zaɓi wasan ka'}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startGame(mode){
+ if(!saved.profile){openProfile();toast('Ka fara cika bayanan ɗan wasa.');return}
+ lastMode=mode;const pool=mode==='letters'?letters:words;const key=mode==='match'?'vocab':mode;
+ saved.seen[key]=saved.seen[key]||[];let unseen=pool.filter(w=>!saved.seen[key].includes(w.ar));
+ if(!unseen.length){saved.seen[key]=[];unseen=pool.slice();toast('An gama zagayen; an fara sabon zagaye!')}
+ deck=shuffle(unseen).slice(0,mode==='daily'?5:10);idx=0;score=0;correct=0;lives=3;runStreak=0;
+ show('play');$('level').textContent='MATaki '+(Math.floor(saved.played/3)+1);$('score').textContent=score;renderQuestion();
+}
+function renderQuestion(){
+ clearInterval(timerId);answered=false;$('nextBtn').style.display='none';$('feedback').textContent='';
+ if(idx>=deck.length||lives<=0){finish();return}
+ const item=deck[idx];$('roundText').textContent=`Tambaya ${idx+1}/${deck.length}`;$('gameProgress').style.width=(idx/deck.length*100)+'%';$('lives').textContent=lives;
+ $('arabicWord').textContent=item.ar;$('translit').textContent=item.tr;
+ $('qLabel').textContent=lastMode==='letters'?'WANE HARAFI NE WANNAN?':'MENENE MA\'ANAR WANNAN KALMA?';
+ $('prompt').textContent=lastMode==='letters'?'Zaɓi amsar da ta dace':`Zaɓi ma'anar ${item.ar}`;
+ let pool=lastMode==='letters'?letters:words;let options=shuffle([item,...shuffle(pool.filter(w=>w!==item)).slice(0,3)]);
+ $('answers').innerHTML='';options.forEach(opt=>{let b=document.createElement('button');b.className='answer';b.textContent=lastMode==='letters'?opt.tr+' — '+opt.en.replace('Harafin ',''):opt.emoji+'  '+opt.en;b.onclick=()=>choose(b,opt===item,item);$('answers').appendChild(b)});
+ timerVal=lastMode==='daily'?30:20;$('timer').textContent='⏱️ '+timerVal+'s';
+ timerId=setInterval(()=>{if(answered)return;timerVal--;$('timer').textContent='⏱️ '+timerVal+'s';if(timerVal<=0){clearInterval(timerId);markSeen(item);save();lives--;runStreak=0;$('lives').textContent=lives;$('feedback').textContent='Lokaci ya ƙare! Amsa: '+item.en;answered=true;reveal(item);$('nextBtn').style.display='block'}},1000);
+}
+function markSeen(item){const key=lastMode==='match'?'vocab':lastMode;saved.seen[key]=saved.seen[key]||[];if(!saved.seen[key].includes(item.ar))saved.seen[key].push(item.ar)}
+function choose(btn,isRight,item){
+ if(answered)return;answered=true;clearInterval(timerId);markSeen(item);
+ if(isRight){btn.classList.add('correct');score+=10+Math.max(0,timerVal);correct++;saved.coins+=3;runStreak++;saved.streak=Math.max(saved.streak,runStreak);$('feedback').textContent=['Madalla! 🎉','Daidai ne! 🔥','Ka iya! ⭐'][Math.floor(Math.random()*3)];}
+ else{btn.classList.add('wrong');lives--;runStreak=0;$('lives').textContent=lives;$('feedback').textContent='Ba haka ba! Amsa: '+item.en;reveal(item)}
+ $('score').textContent=score;$('nextBtn').style.display='block';save();
+}
+function reveal(item){[...$('answers').children].forEach(b=>{if(b.textContent.includes(item.en)|| (lastMode==='letters'&&b.textContent.startsWith(item.tr)))b.classList.add('correct')})}
+function nextQuestion(){idx++;renderQuestion()}
+function finish(){
+ clearInterval(timerId);show('end');saved.played++;saved.total+=correct;saved.best=Math.max(saved.best,score);let bonus=correct*2;saved.coins+=bonus;save();
+ $('resultEmoji').textContent=correct>=8?'🏆':correct>=5?'🌟':'💪';$('resultTitle').textContent=correct>=8?'Zakara! Madalla!':correct>=5?'Aiki mai kyau!':'Kada ka karaya!';
+ $('resultText').textContent=correct>=8?'Ka yi fice sosai. Ci gaba da haka!':'Kowane zagaye yana ƙara maka ilimi. Ka sake gwadawa!';
+ $('finalScore').textContent=score;$('finalCoins').textContent=bonus;$('finalCorrect').textContent=correct+'/'+deck.length;
+}
+function goHome(){clearInterval(timerId);show('home');updateHome()}
+updateHome();
+</script>
+<!-- Monetag tag URL supplied by the owner; a zone-specific tag may be needed in Monetag dashboard. -->
+<script src="https://quge5.com/88/tag.min.js" data-cfasync="false" async></script>
+</body></html>
